@@ -1,7 +1,19 @@
-import "./App.css";
+import { NavLink, Outlet } from "react-router-dom";
 
-function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
-}
+const App = () => {
+  return (
+    <>
+      <nav>
+        <NavLink to="/">Dashboard</NavLink>
+        <NavLink to="/organizations">Organizations</NavLink>
+        <NavLink to="/contacts">Contacts</NavLink>
+        <NavLink to="/reports">Reports</NavLink>
+      </nav>
+      <main>
+        <Outlet />
+      </main>
+    </>
+  );
+};
 
 export default App;
