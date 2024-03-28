@@ -4,7 +4,7 @@ const Reports = () => {
   return (
     <>
       <Helmet title="Reports" />
-      <h1 className="text-3xl font-bold underline">Reports</h1>
+      <h1 className="mb-8 text-3xl font-bold">Reports</h1>
     </>
   );
 };

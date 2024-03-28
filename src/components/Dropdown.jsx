@@ -20,7 +20,12 @@ const Dropdown = ({
 
   return (
     <>
-      <button ref={refs.setReference} type="button" onClick={toggleButton}>
+      <button
+        className="mt-1"
+        ref={refs.setReference}
+        type="button"
+        onClick={toggleButton}
+      >
         {dropdownButton}
         {show &&
           createPortal(

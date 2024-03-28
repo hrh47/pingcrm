@@ -39,8 +39,8 @@ const App = () => {
                   dropdownButton={
                     <div className="group flex items-center cursor-pointer select-none">
                       <div className="mr-1 text-gray-700 group-hover:text-indigo-600 focus:text-indigo-600 whitespace-nowrap">
-                        <span>Andrew</span>
-                        <span className="hidden md:inline">&nbsp;Hsieh</span>
+                        <span>John</span>
+                        <span className="hidden md:inline">&nbsp;Doe</span>
                       </div>
                       <Icon
                         className="w-5 h-5 fill-gray-700 group-hover:fill-indigo-600 focus:fill-indigo-600"
@@ -52,7 +52,7 @@ const App = () => {
                   <div className="mt-2 py-2 text-sm bg-white rounded shadow-xl">
                     <NavLink
                       className="block px-6 py-2 hover:text-white hover:bg-indigo-500"
-                      to="#"
+                      to={`/users/1/edit`}
                     >
                       My Profile
                     </NavLink>
