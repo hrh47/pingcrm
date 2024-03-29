@@ -8,6 +8,7 @@ const Dropdown = ({
   children,
   placement = "bottom-end",
   autoClose = true,
+  className,
 }) => {
   const [show, setShow] = useState(false);
   const toggleButton = () => setShow(!show);
@@ -21,7 +22,7 @@ const Dropdown = ({
   return (
     <>
       <button
-        className="mt-1"
+        className={className}
         ref={refs.setReference}
         type="button"
         onClick={toggleButton}
@@ -67,6 +68,7 @@ Dropdown.propTypes = {
   children: PropTypes.node,
   placement: PropTypes.string,
   autoClose: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 export default Dropdown;

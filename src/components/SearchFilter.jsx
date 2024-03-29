@@ -43,7 +43,7 @@ const SearchFilter = ({
             type="text"
             name="search"
             placeholder="Search…"
-            onInput={(e) => onInput(e.target.value)}
+            onChange={(e) => onInput(e.target.value)}
             value={modelValue}
           />
         </div>

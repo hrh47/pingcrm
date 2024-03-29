@@ -20,6 +20,7 @@ const App = () => {
                   <Logo className="fill-white" width="120" height="28" />
                 </NavLink>
                 <Dropdown
+                  className="md:hidden"
                   dropdownButton={
                     <svg
                       className="w-6 h-6 fill-white md:hidden"
@@ -36,6 +37,7 @@ const App = () => {
               <div className="md:text-md flex items-center justify-between p-4 w-full text-sm bg-white border-b md:px-12 md:py-0">
                 <div className="mr-4 mt-1">Acme Corporation</div>
                 <Dropdown
+                  className="mt-1"
                   dropdownButton={
                     <div className="group flex items-center cursor-pointer select-none">
                       <div className="mr-1 text-gray-700 group-hover:text-indigo-600 focus:text-indigo-600 whitespace-nowrap">
