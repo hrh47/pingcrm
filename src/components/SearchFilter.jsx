@@ -5,7 +5,7 @@ const SearchFilter = ({
   children,
   modelValue,
   maxWidth = 300,
-  onInput,
+  onChange,
   reset,
   className,
 }) => {
@@ -43,7 +43,7 @@ const SearchFilter = ({
             type="text"
             name="search"
             placeholder="Search…"
-            onChange={(e) => onInput(e.target.value)}
+            onChange={(e) => onChange(e.target.value)}
             value={modelValue}
           />
         </div>
@@ -63,7 +63,7 @@ SearchFilter.propTypes = {
   children: PropTypes.node,
   modelValue: PropTypes.string,
   maxWidth: PropTypes.number,
-  onInput: PropTypes.func,
+  onChange: PropTypes.func,
   reset: PropTypes.func,
   className: PropTypes.string,
 };

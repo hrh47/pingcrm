@@ -5,7 +5,10 @@ import PropTypes from "prop-types";
 
 const MainMenuItem = ({ icon, link, text }) => {
   const location = useLocation();
-  const isActive = location.pathname === link;
+  const isActive =
+    link === "/"
+      ? location.pathname === link
+      : location.pathname.startsWith(link);
 
   const iconClasses = classNames("w-4 h-4 mr-2", {
     "text-white fill-current": isActive,
