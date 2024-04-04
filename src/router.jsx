@@ -3,6 +3,7 @@ import App from "./App";
 import Dashboard from "./pages/Dashboard";
 import Organizations from "./pages/Organizations/Index";
 import OrganizationCreate from "./pages/Organizations/Create";
+import OrganizationEdit from "./pages/Organizations/Edit";
 import Contacts from "./pages/Contacts/Index";
 import Reports from "./pages/Reports/Index";
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/organizations/create",
         element: <OrganizationCreate />,
+      },
+      {
+        path: "/organizations/:id/edit",
+        element: <OrganizationEdit />,
       },
       {
         path: "/contacts",
