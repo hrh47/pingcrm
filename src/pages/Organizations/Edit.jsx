@@ -65,6 +65,12 @@ const OrganizationEdit = () => {
       }));
     };
   };
+  const handleDelete = () => {
+    if (confirm("Are you sure you want to delete this organization?")) {
+      console.info("delete");
+    }
+  };
+
   return (
     <>
       <Helmet title={form.name} />
@@ -147,6 +153,7 @@ const OrganizationEdit = () => {
                 className="text-red-600 hover:underline"
                 tabIndex="-1"
                 type="button"
+                onClick={handleDelete}
               >
                 Delete Organization
               </button>
@@ -193,8 +200,42 @@ const OrganizationEdit = () => {
                     )}
                   </NavLink>
                 </td>
+                <td className="border-t" tabIndex={-1}>
+                  <NavLink
+                    className="flex items-center px-6 py-4 focus:text-indigo-500"
+                    to={`/contacts/${contact.id}/edit`}
+                  >
+                    {contact.city}
+                  </NavLink>
+                </td>
+                <td className="border-t" tabIndex={-1}>
+                  <NavLink
+                    className="flex items-center px-6 py-4 focus:text-indigo-500"
+                    to={`/contacts/${contact.id}/edit`}
+                  >
+                    {contact.phone}
+                  </NavLink>
+                </td>
+                <td className="w-px border-t" tabIndex={-1}>
+                  <NavLink
+                    className="flex items-center px-4"
+                    to={`/contacts/${contact.id}/edit`}
+                  >
+                    <Icon
+                      name="cheveron-right"
+                      className="block w-6 h-6 fill-gray-400"
+                    />
+                  </NavLink>
+                </td>
               </tr>
             ))}
+            {organization.contacts.length === 0 && (
+              <tr>
+                <td className="px-6 py-4 border-t" colSpan={4}>
+                  No organizations found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
