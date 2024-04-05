@@ -5,6 +5,7 @@ import Organizations from "./pages/Organizations/Index";
 import OrganizationCreate from "./pages/Organizations/Create";
 import OrganizationEdit from "./pages/Organizations/Edit";
 import Contacts from "./pages/Contacts/Index";
+import ContactCreate from "./pages/Contacts/Create";
 import Reports from "./pages/Reports/Index";
 
 const router = createBrowserRouter([
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/contacts",
         element: <Contacts />,
+      },
+      {
+        path: "/contacts/create",
+        element: <ContactCreate />,
       },
       {
         path: "/reports",
