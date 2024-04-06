@@ -92,7 +92,7 @@ const ContactEdit = () => {
 
   return (
     <>
-      <Helmet title={form.name} />
+      <Helmet title={`${form.firstName} ${form.lastName}`} />
       <h1 className="mb-8 text-3xl font-bold">
         <NavLink
           className="text-indigo-400 hover:text-indigo-600"
@@ -100,7 +100,8 @@ const ContactEdit = () => {
         >
           Contacts
         </NavLink>
-        <span className="text-indigo-400 font-medium">/</span> {form.name}
+        <span className="text-indigo-400 font-medium">/</span>
+        {form.firstName} {form.lastName}
       </h1>
       <div className="max-w-3xl bg-white rounded-md shadow overflow-hidden">
         <form onSubmit={handleSubmit}>
@@ -188,7 +189,7 @@ const ContactEdit = () => {
             />
           </div>
           <div className="flex items-center justify-end px-8 py-4 bg-gray-50 border-t border-gray-100">
-            {!contact.deletedAt && (
+            {!contact.deleted_at && (
               <button
                 className="text-red-600 hover:underline"
                 tabIndex="-1"

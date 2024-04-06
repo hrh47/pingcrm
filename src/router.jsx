@@ -8,6 +8,9 @@ import Contacts from "./pages/Contacts/Index";
 import ContactCreate from "./pages/Contacts/Create";
 import ContactEdit from "./pages/Contacts/Edit";
 import Reports from "./pages/Reports/Index";
+import Users from "./pages/Users/Index";
+import UserEdit from "./pages/Users/Edit";
+import UserCreate from "./pages/Users/Create";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +48,18 @@ const router = createBrowserRouter([
       {
         path: "/reports",
         element: <Reports />,
+      },
+      {
+        path: "/users",
+        element: <Users />,
+      },
+      {
+        path: "/users/create",
+        element: <UserCreate />,
+      },
+      {
+        path: "/users/:id/edit",
+        element: <UserEdit />,
       },
     ],
   },

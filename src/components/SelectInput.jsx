@@ -17,7 +17,7 @@ const SelectInput = ({
     <div className={className}>
       {!!label && (
         <label htmlFor={id} className="form-label">
-          {label}
+          {label}:
         </label>
       )}
       <select

@@ -17,7 +17,7 @@ const TextInput = ({
     <div className={className}>
       {!!label && (
         <label htmlFor={id} className="form-label">
-          {label}
+          {label}:
         </label>
       )}
       <input
