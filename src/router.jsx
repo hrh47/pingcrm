@@ -11,6 +11,7 @@ import Reports from "./pages/Reports/Index";
 import Users from "./pages/Users/Index";
 import UserEdit from "./pages/Users/Edit";
 import UserCreate from "./pages/Users/Create";
+import Login from "./pages/Auth/Login";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
         element: <UserEdit />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 
