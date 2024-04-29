@@ -12,6 +12,7 @@ import Users from "./pages/Users/Index";
 import UserEdit from "./pages/Users/Edit";
 import UserCreate from "./pages/Users/Create";
 import Login from "./pages/Auth/Login";
+import NotFound from "./pages/NotFound/Index";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 

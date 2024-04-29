@@ -86,7 +86,7 @@ const FileInput = ({
           </div>
         )}
       </div>
-      {!!error && <div className="form-error">{error}</div>}
+      {!!error && <div className="form-error">{error.message}</div>}
     </div>
   );
 };
@@ -96,7 +96,7 @@ FileInput.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
   accept: PropTypes.string,
-  error: PropTypes.string,
+  error: PropTypes.object,
   onChange: PropTypes.func,
 };
 

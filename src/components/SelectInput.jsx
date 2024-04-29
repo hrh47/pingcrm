@@ -30,7 +30,7 @@ const SelectInput = ({
       >
         {children}
       </select>
-      {!!error && <div className="form-error">{error}</div>}
+      {!!error && <div className="form-error">{error.message}</div>}
     </div>
   );
 };
@@ -39,7 +39,7 @@ SelectInput.propTypes = {
   id: PropTypes.string,
   className: PropTypes.string,
   label: PropTypes.string,
-  error: PropTypes.string,
+  error: PropTypes.object,
   children: PropTypes.node,
   modelValue: PropTypes.string,
   onChange: PropTypes.func,

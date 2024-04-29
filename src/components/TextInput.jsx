@@ -29,7 +29,7 @@ const TextInput = ({
         onFocus={onFocus}
         onSelect={onSelect}
       />
-      {!!error && <div className="form-error">{error}</div>}
+      {!!error && <div className="form-error">{error.message}</div>}
     </div>
   );
 };
@@ -39,7 +39,7 @@ TextInput.propTypes = {
   type: PropTypes.string,
   className: PropTypes.string,
   label: PropTypes.string,
-  error: PropTypes.string,
+  error: PropTypes.object,
   modelValue: PropTypes.string,
   onChange: PropTypes.func,
   onFocus: PropTypes.func,

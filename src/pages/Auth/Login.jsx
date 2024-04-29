@@ -3,13 +3,22 @@ import Logo from "../../components/Logo";
 import TextInput from "../../components/TextInput";
 import { useForm, Controller } from "react-hook-form";
 import LoadingButton from "../../components/LoadingButton";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+  remember: z.boolean(),
+});
 
 const Login = () => {
   const {
     handleSubmit,
     control,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm({
+    resolver: zodResolver(schema),
     defaultValues: {
       email: "johndoe@example.com",
       password: "secret",
@@ -44,15 +53,12 @@ const Login = () => {
               <Controller
                 control={control}
                 name="email"
-                render={({
-                  field: { value, onChange, onBlur },
-                  fieldState: { error },
-                }) => (
+                render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
                     modelValue={value}
                     onChange={onChange}
                     onBlur={onBlur}
-                    error={error}
+                    error={errors.email}
                     label="Email"
                     type="email"
                     className="mt-10"
@@ -64,15 +70,12 @@ const Login = () => {
               <Controller
                 control={control}
                 name="password"
-                render={({
-                  field: { value, onChange, onBlur },
-                  fieldState: { error },
-                }) => (
+                render={({ field: { value, onChange, onBlur } }) => (
                   <TextInput
                     modelValue={value}
                     onChange={onChange}
                     onBlur={onBlur}
-                    error={error}
+                    error={errors.password}
                     label="Password"
                     type="password"
                     className="mt-6"
