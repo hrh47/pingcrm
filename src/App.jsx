@@ -4,6 +4,7 @@ import Logo from "./components/Logo";
 import Icon from "./components/Icon";
 import Dropdown from "./components/Dropdown";
 import MainMenu from "./components/MainMenu";
+import FlashMessages from "./components/FlashMessages";
 
 const App = () => {
   return (
@@ -77,6 +78,7 @@ const App = () => {
             <div className="md:flex md:flex-grow md:overflow-hidden">
               <MainMenu className="hidden flex-shrink-0 p-12 w-56 bg-indigo-800 overflow-y-auto md:block" />
               <div className="px-4 py-8 md:flex-1 md:p-12 md:overflow-y-auto">
+                <FlashMessages />
                 <Outlet />
               </div>
             </div>
