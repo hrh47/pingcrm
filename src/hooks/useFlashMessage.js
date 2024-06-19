@@ -5,9 +5,9 @@ const useFlashMessage = create((set) => ({
   error: null,
   flash(type, message) {
     if (type === "success") {
-      set(() => ({ success: message }));
+      set(() => ({ success: message, error: null }));
     } else if (type === "error") {
-      set(() => ({ error: message }));
+      set(() => ({ success: null, error: message }));
     }
   },
   clear(type) {
