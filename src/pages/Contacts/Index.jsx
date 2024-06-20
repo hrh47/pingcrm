@@ -1,45 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import SearchFilter from "../../components/SearchFilter";
 import { NavLink } from "react-router-dom";
 import Icon from "../../components/Icon";
+import useDebounce from "../../hooks/useDebounce";
+import Pagination from "../../components/Pagination";
+import useContacts from "../../hooks/useContacts";
 
 const Contacts = () => {
   const [filters, setFilters] = useState({ search: "", trashed: "" });
-  const [contacts] = useState([
-    {
-      id: 22,
-      name: "Dannie Bahringer",
-      phone: "(888) 706-2149",
-      city: "Deckowview",
-      deleted_at: null,
-      organization: {
-        name: "Hand PLC",
-      },
-    },
-    {
-      id: 48,
-      name: "Antonietta Bartoletti",
-      phone: "(844) 317-0631",
-      city: "Ondrickamouth",
-      deleted_at: null,
-      organization: {
-        name: "Dickens, Dare and Goldner",
-      },
-    },
-    {
-      id: 20,
-      name: "Laura Beatty",
-      phone: "800.836.8312",
-      city: "North Audra",
-      deleted_at: null,
-      organization: {
-        name: "Schuster, Kassulke and Tillman",
-      },
-    },
-  ]);
+  const [page, setPage] = useState(1);
+  const params = useDebounce({ filters, page });
+  const { data, isLoading } = useContacts(params);
+  const [contacts, setContacts] = useState([]);
+  useEffect(() => {
+    if (data?.data) {
+      setContacts(data.data);
+    }
+  }, [data]);
 
-  const reset = () => setFilters({ search: "", trashed: "" });
+  const reset = () => {
+    setFilters({ search: "", trashed: "" });
+    setPage(1);
+  };
 
   return (
     <>
@@ -50,12 +33,18 @@ const Contacts = () => {
           className="mr-4 w-full max-w-md"
           modelValue={filters.search}
           reset={reset}
-          onChange={(value) => setFilters({ ...filters, search: value })}
+          onChange={(value) => {
+            setFilters({ ...filters, search: value });
+            setPage(1);
+          }}
         >
           <label className="block text-gray-700">Trashed:</label>
           <select
             className="form-select mt-1 w-full"
-            onInput={(e) => setFilters({ ...filters, trashed: e.target.value })}
+            onInput={(e) => {
+              setFilters({ ...filters, trashed: e.target.value });
+              setPage(1);
+            }}
             value={filters.trashed}
           >
             <option value="" />
@@ -151,6 +140,15 @@ const Contacts = () => {
           </tbody>
         </table>
       </div>
+      {!isLoading && data.meta.links && (
+        <Pagination
+          className="mt-6"
+          links={data.meta.links}
+          goTo={(page) => {
+            setPage(page);
+          }}
+        />
+      )}
     </>
   );
 };

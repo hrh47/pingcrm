@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import TextInput from "../../components/TextInput";
 import SelectInput from "../../components/SelectInput";
 import LoadingButton from "../../components/LoadingButton";
 import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useOrganizations from "../../hooks/useOrganizations";
+import useContact from "../../hooks/useContact";
+import _ from "lodash";
+import useUpdateContact from "../../hooks/useUpdateContact";
+import useDeleteContact from "../../hooks/useDeleteContact";
+import useFlashMessage from "../../hooks/useFlashMessage";
 
 const schema = z.object({
   firstName: z
@@ -24,74 +30,84 @@ const schema = z.object({
 });
 
 const ContactEdit = () => {
-  const [organizations] = useState([
-    {
-      id: 38,
-      name: "Abshire, Jacobi and Abshire",
-      phone: "800-217-4466",
-      city: "Maeveburgh",
-      deleted_at: null,
-    },
-    {
-      id: 53,
-      name: "Bauch Group",
-      phone: "1-877-766-0172",
-      city: "New Hilmafurt",
-      deleted_at: new Date(),
-    },
-    {
-      id: 62,
-      name: "Bauch-Reichel",
-      phone: "888-399-8158",
-      city: "Fionaside",
-      deleted_at: null,
-    },
-  ]);
-  const [contact] = useState({
-    id: 22,
-    first_name: "Rick",
-    last_name: "Kling",
-    organization_id: 53,
-    email: "lakin.allan@example.org",
-    phone: "1-844-827-7039",
-    address: "9460 Marvin Locks",
-    city: "Kozeymouth",
-    region: "New Mexico",
-    country: "",
-    postal_code: "93959",
-    deleted_at: null,
-  });
+  const [organizations, setOrganizations] = useState([]);
+  const { data: organizationsData } = useOrganizations({});
+  useEffect(() => {
+    if (organizationsData?.data) {
+      setOrganizations(organizationsData.data);
+    }
+  }, [organizationsData]);
+  const { id } = useParams();
+  const { data } = useContact(id);
+  const [contact, setContact] = useState({});
+  useEffect(() => {
+    if (data?.data) {
+      setContact(data.data);
+    }
+  }, [data]);
   const {
     handleSubmit,
+    reset,
     control,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      firstName: contact.first_name,
-      lastName: contact.last_name,
-      organizationId: contact.organization_id.toString(),
-      email: contact.email,
-      phone: contact.phone,
-      address: contact.address,
-      city: contact.city,
-      region: contact.region,
-      country: contact.country,
-      postalCode: contact.postal_code,
+      firstName: "",
+      lastName: "",
+      organizationId: "",
+      email: "",
+      phone: "",
+      address: "",
+      city: "",
+      region: "",
+      country: "",
+      postalCode: "",
     },
+    values: Object.fromEntries(
+      Object.entries(contact).map(([key, value]) => [
+        _.camelCase(key),
+        value?.toString(),
+      ])
+    ),
   });
+
+  const updateContact = useUpdateContact(id);
+  const flash = useFlashMessage((state) => state.flash);
   const onSubmit = (data) => {
-    console.info(data);
-    return new Promise((resolve) => {
-      setTimeout(resolve, 3000);
+    reset();
+    updateContact.mutate({
+      id,
+      data: Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [_.snakeCase(key), value])
+      ),
     });
   };
+  useEffect(() => {
+    if (updateContact.isSuccess) {
+      updateContact.reset();
+      flash("success", "Contact updated.");
+    } else if (updateContact.isError) {
+      flash("error", updateContact?.error?.response?.data?.message);
+    }
+  }, [updateContact, flash]);
 
+  const deleteContact = useDeleteContact();
+  const navigate = useNavigate();
   const handleDelete = () => {
     if (confirm("Are you sure you want to delete this contact?")) {
-      console.info("delete");
+      deleteContact.mutate(id);
     }
   };
+  useEffect(() => {
+    if (deleteContact.isSuccess) {
+      deleteContact.reset();
+      flash("success", "Contact deleted.");
+      navigate("/contacts");
+    } else if (deleteContact.isError) {
+      flash("error", deleteContact?.error?.response?.data?.message);
+    }
+  }, [deleteContact, flash, navigate]);
 
   return (
     <>

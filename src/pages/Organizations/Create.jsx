@@ -1,11 +1,15 @@
 import { Helmet } from "react-helmet-async";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import TextInput from "../../components/TextInput";
 import SelectInput from "../../components/SelectInput";
 import LoadingButton from "../../components/LoadingButton";
 import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useCreateOrganization from "../../hooks/useCreateOrganization";
+import useFlashMessage from "../../hooks/useFlashMessage";
+import _ from "lodash";
+import { useEffect } from "react";
 
 const schema = z.object({
   name: z.string().min(1, { message: "The name field is required." }),
@@ -23,6 +27,7 @@ const OrganizationCreate = () => {
     handleSubmit,
     control,
     formState: { isSubmitting, errors },
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -36,12 +41,27 @@ const OrganizationCreate = () => {
       postalCode: "",
     },
   });
+
+  const createOrganization = useCreateOrganization();
+  const flash = useFlashMessage((state) => state.flash);
+  const navigate = useNavigate();
   const onSubmit = (data) => {
-    console.info(data);
-    return new Promise((resolve) => {
-      setTimeout(resolve, 3000);
-    });
+    reset();
+    createOrganization.mutate(
+      Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [_.snakeCase(key), value])
+      )
+    );
   };
+  useEffect(() => {
+    if (createOrganization.isSuccess) {
+      createOrganization.reset();
+      flash("success", "Organization created.");
+      navigate("/organizations");
+    } else if (createOrganization.isError) {
+      flash("error", createOrganization?.error?.response?.data?.message);
+    }
+  }, [createOrganization, flash, navigate]);
 
   return (
     <>

@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import TextInput from "../../components/TextInput";
 import SelectInput from "../../components/SelectInput";
 import LoadingButton from "../../components/LoadingButton";
 import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useOrganizations from "../../hooks/useOrganizations";
+import useCreateContact from "../../hooks/useCreateContact";
+import useFlashMessage from "../../hooks/useFlashMessage";
+import _ from "lodash";
 
 const schema = z.object({
   firstName: z
@@ -24,31 +28,16 @@ const schema = z.object({
 });
 
 const ContactCreate = () => {
-  const [organizations] = useState([
-    {
-      id: 38,
-      name: "Abshire, Jacobi and Abshire",
-      phone: "800-217-4466",
-      city: "Maeveburgh",
-      deleted_at: null,
-    },
-    {
-      id: 42,
-      name: "Bauch Group",
-      phone: "1-877-766-0172",
-      city: "New Hilmafurt",
-      deleted_at: new Date(),
-    },
-    {
-      id: 62,
-      name: "Bauch-Reichel",
-      phone: "888-399-8158",
-      city: "Fionaside",
-      deleted_at: null,
-    },
-  ]);
+  const [organizations, setOrganizations] = useState([]);
+  const { data } = useOrganizations({});
+  useEffect(() => {
+    if (data?.data) {
+      setOrganizations(data.data);
+    }
+  }, [data]);
   const {
     handleSubmit,
+    reset,
     control,
     formState: { isSubmitting, errors },
   } = useForm({
@@ -66,12 +55,27 @@ const ContactCreate = () => {
       postalCode: "",
     },
   });
+
+  const createContact = useCreateContact();
+  const flash = useFlashMessage((state) => state.flash);
+  const navigate = useNavigate();
   const onSubmit = (data) => {
-    console.info(data);
-    return new Promise((resolve) => {
-      setTimeout(resolve, 3000);
-    });
+    reset();
+    createContact.mutate(
+      Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [_.snakeCase(key), value])
+      )
+    );
   };
+  useEffect(() => {
+    if (createContact.isSuccess) {
+      createContact.reset();
+      flash("success", "Contact created.");
+      navigate("/contacts");
+    } else if (createContact.isError) {
+      flash("error", createContact?.error?.response?.data?.message);
+    }
+  }, [createContact, flash, navigate]);
 
   return (
     <>
