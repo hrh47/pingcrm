@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const filesize = (size) => {
   const i = Math.floor(Math.log(size) / Math.log(1024));
@@ -31,6 +31,7 @@ Button.propTypes = {
 
 const FileInput = ({
   id = `file-input-${uuid()}`,
+  modelValue,
   className,
   label,
   error,
@@ -39,6 +40,13 @@ const FileInput = ({
 }) => {
   const fileInput = useRef();
   const [file, setFile] = useState(null);
+  useEffect(() => {
+    if (!modelValue) {
+      setFile(null);
+      fileInput.current.value = null;
+    }
+  }, [modelValue]);
+
   const browse = () => {
     fileInput.current.click();
   };
@@ -47,6 +55,7 @@ const FileInput = ({
     onChange(null);
     fileInput.current.value = null;
   };
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFile(file);
@@ -93,6 +102,9 @@ const FileInput = ({
 
 FileInput.propTypes = {
   id: PropTypes.string,
+  modelValue: PropTypes.shape({
+    current: PropTypes.instanceOf(HTMLInputElement),
+  }),
   className: PropTypes.string,
   label: PropTypes.string,
   accept: PropTypes.string,

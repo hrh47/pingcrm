@@ -28,6 +28,7 @@ const TextInput = ({
         onChange={onChange}
         onFocus={onFocus}
         onSelect={onSelect}
+        autoComplete=""
       />
       {!!error && <div className="form-error">{error.message}</div>}
     </div>

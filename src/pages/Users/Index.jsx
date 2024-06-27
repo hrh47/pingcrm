@@ -1,45 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import SearchFilter from "../../components/SearchFilter";
 import { NavLink } from "react-router-dom";
 import Icon from "../../components/Icon";
+import useDebounce from "../../hooks/useDebounce";
+import useUsers from "../../hooks/useUsers";
 
 const Users = () => {
   const [filters, setFilters] = useState({ search: "", trashed: "", role: "" });
-  const [users] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      email: "johndoe@example.com",
-      owner: true,
-      photo: "",
-      deleted_at: null,
-    },
-    {
-      id: 4,
-      name: "Velva Heaney",
-      email: "felix.barton@example.net",
-      owner: false,
-      photo: "",
-      deleted_at: null,
-    },
-    {
-      id: 6,
-      name: "Ebba Kutch",
-      email: "vbecker@example.org",
-      owner: false,
-      photo: "",
-      deleted_at: null,
-    },
-    {
-      id: 5,
-      name: "Jack Leuschke",
-      email: "maymie.nikolaus@example.com",
-      owner: false,
-      photo: "",
-      deleted_at: null,
-    },
-  ]);
+  const params = useDebounce({ filters });
+  const [users, setUsers] = useState([]);
+  const { data } = useUsers(params);
+  useEffect(() => {
+    if (data?.data) {
+      setUsers(data.data);
+    }
+  }, [data]);
 
   const reset = () => setFilters({ search: "", trashed: "", role: "" });
 
@@ -102,6 +78,12 @@ const Users = () => {
                     className="flex items-center px-6 py-4 focus:text-indigo-500"
                     to={`/users/${user.id}/edit`}
                   >
+                    {user.photo && (
+                      <img
+                        className="block -my-2 mr-2 w-5 h-5 rounded-full"
+                        src={user.photo}
+                      ></img>
+                    )}
                     {user.name}
                     {user.deleted_at && (
                       <Icon
